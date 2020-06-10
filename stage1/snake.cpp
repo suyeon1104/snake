@@ -131,7 +131,7 @@ int main() {
     wborder(win3, '|', '|', '-', '-', '+', '+', '+', '+');
     wattroff(win3, COLOR_PAIR(4));
     wrefresh(win3);
-
+    getch();
     delwin(win1);
     delwin(win2);
     delwin(win3);
