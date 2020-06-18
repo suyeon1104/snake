@@ -150,18 +150,33 @@ void Snake::tick()
         headC++;
         dir = RIGHT;
     }
-
+    checkWallConflict(headR, headC);
+    if (getFail()) {
+        return;
+    }
     // 자취 따라가기. BODY는 자신의 앞에 있는 BODY나 HEAD를 따라간다.
     snakeData.push_front(vector<int>({headR, headC}));
     snakeData.pop_back();
-    check(headR, headC);
+    checkBodyConflict(headR, headC);
+    if (getFail()) {
+        return;
+    }
 }
 
 // Head의 위치릍 통해 Head가 곧바로 mapData에 있는 Wall과 부딪힐 것인지 미리 체크한다.
-void Snake::check(int headR, int headC) {
+void Snake::checkWallConflict(int headR, int headC) {
     if (Map::bgMap[headR][headC] == 1) {
         fail = true;
         return;
+    }
+}
+
+void Snake::checkBodyConflict(int headR, int headC) {
+    for (int i = 1; i < snakeData.size(); i++) {
+        if (headR == snakeData[i][0] && headC == snakeData[i][1]) {
+            fail = true;
+            return;
+        }
     }
 }
 

@@ -20,7 +20,8 @@ public:
     void findBody(vector<vector<int>> &mapData);
     
     void tick();
-    void check(int, int);
+    void checkWallConflict(int, int);
+    void checkBodyConflict(int headR, int headC);
     bool getFail();
     void display(WINDOW *win);
 };

@@ -87,20 +87,16 @@ int main()
     // Game loop
     while (true)
     {
-        if (snake.getFail())
-        {
-            break;
-        }
         snake.tick();
         if (snake.getFail())
         {
             break;
-        }        
+        }
         Map::bgMap.display(win1);
         wrefresh(win1);
         snake.display(win1);
         wrefresh(win1);
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
     nodelay(stdscr, false);
     attron(COLOR_PAIR(CP_MESSAGE));
