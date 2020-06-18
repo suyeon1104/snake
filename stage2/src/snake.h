@@ -1,14 +1,25 @@
-enum Palette
+#include <deque>
+#include <vector>
+#include <ncurses.h>
+using namespace std;
+
+
+// Snake 클래스
+class Snake
 {
-    CP_BKGR = 1,    // 바탕 팔레트
-    CP_WALL,        // 변(Wall) 팔레트
-    CP_IMMUNE_WALL, // 모서리(Immune Wall) 팔레트
-    CP_HEAD,        // Snake HEAD 팔레트
-    CP_BODY,        // Snake BDOY 팔레트
-    CP_GROWTH,      // GROWTH ITEM 팔레트
-    CP_POISON,      // POISON ITEM 팔레트
-    CP_GATE,        // GATE 팔레트
-    CP_MESSAGE,     // MESSAGE 팔레트
-    CP_SCORE,       // SCORE 팔레트
-    CP_MISSION,     // MISSION 팔레트
+    enum Direction {
+        LEFT, RIGHT, UP, DOWN
+    };
+    Direction dir;
+    bool Fail = false;
+    deque<vector<int>> snakeData = deque<vector<int>>();
+    int key;
+public:
+    Snake(vector<vector<int>> mapData, WINDOW* win);
+    void findBody(vector<vector<int>> &mapData);
+    
+    void tick();
+
+    bool getFail();
+    void display(WINDOW *win);
 };
