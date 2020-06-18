@@ -1,8 +1,6 @@
 #include <iostream>
 #include <clocale>
 #include <deque>
-#include <time.h>
-#include <cstdlib>
 #include <thread>
 #include <chrono>
 #include "main.h"
@@ -50,13 +48,13 @@ int main()
     initGame();
 
     Map::setbgMap(Map::mapDatas[0]);
-    WINDOW *win1 = newwin(Map::bgMap.getRowSize(), Map::bgMap.getColSize() * 2, 18, 16);
+    WINDOW *win1 = newwin(Map::bgMap.getRowSize(), Map::bgMap.getColSize() * 2, 19, 16);
     wbkgd(win1, COLOR_PAIR(CP_BKGR));
     Map::bgMap.display(win1);
 
     // score board
     WINDOW *win2 = newwin(10, 20, 5, 20);
-    int B = 0, plus = 0, minus = 0, G = 0;
+    int bodyLength = 0, growth = 0, poison = 0, gate = 0;
     wbkgd(win2, COLOR_PAIR(CP_BKGR));
     wattron(win2, COLOR_PAIR(CP_SCORE));
     mvwprintw(win2, 1, 1, "Score Board");
@@ -83,24 +81,30 @@ int main()
     wattroff(win3, COLOR_PAIR(CP_MISSION));
     wrefresh(win3);
 
-    Snake snake(Map::mapDatas[0], win1);
+    Snake snake(Map::mapDatas[0]);
     // Game loop
     while (true)
-    {
-        snake.tick();
-        if (snake.getFail())
-        {
+    {   
+        try {
+            snake.tick();
+        }
+        catch(Failure ex) {
+            attron(COLOR_PAIR(CP_MESSAGE));
+            mvprintw(17, 20, (ex.message + "가 발생하였습니다.").c_str());
+            attroff(COLOR_PAIR(CP_MESSAGE));
+            refresh();
+            getch();
             break;
         }
         Map::bgMap.display(win1);
         wrefresh(win1);
         snake.display(win1);
         wrefresh(win1);
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));
     }
     nodelay(stdscr, false);
     attron(COLOR_PAIR(CP_MESSAGE));
-    mvprintw(16, 30, "YOU LOSE...");
+    mvprintw(16, 20, "YOU LOSE...");
     attroff(COLOR_PAIR(CP_MESSAGE));
     refresh();
     getch();

@@ -1,3 +1,6 @@
+#include <string>
+using namespace std;
+
 enum Palette
 {
     CP_BKGR = 1,    // 바탕 팔레트
@@ -11,4 +14,12 @@ enum Palette
     CP_MESSAGE,     // MESSAGE 팔레트
     CP_SCORE,       // SCORE 팔레트
     CP_MISSION,     // MISSION 팔레트
+};
+
+class Failure
+{
+public:
+    string message;
+    Failure(const string& msg): message(msg) {
+    }
 };

@@ -4,12 +4,9 @@
 #include <ncurses.h>
 #include <iostream>
 #include <cstdlib>
-#include <chrono>
-#include <time.h>
-#include <thread>
 
-// Snake 멤버들
-Snake::Snake(vector<vector<int>> mapData, WINDOW *win)
+//Snake의 생성자로서, mapData로부터 snake의 Head를 찾아낸 뒤, findBody를 이용하여 Snake의 나머지 Body들을 찾아내고, snake의 초기 방향을 검출함.
+Snake::Snake(vector<vector<int>> mapData)
 {
     for (int i = 0; i < mapData.size(); i++)
     {
@@ -23,10 +20,10 @@ Snake::Snake(vector<vector<int>> mapData, WINDOW *win)
         }
     }
 foundHead:
-    int r = snakeData.back()[0];
-    int c = snakeData.back()[1];
     findBody(mapData);
 
+    // snake의 초기 방향 검출
+    
     if (snakeData.size() == 1)
     {
         dir = LEFT;
@@ -52,7 +49,7 @@ foundHead:
     }
 }
 
-
+// mapData로부터 snake의 body를 재귀적으로 찾아내기
 void Snake::findBody(vector<vector<int>> &mapData)
 {
     int nrow = mapData.size();
@@ -86,13 +83,14 @@ void Snake::findBody(vector<vector<int>> &mapData)
     }
 }
 
+// 한 tick 내에 수행하는 snake의 동작 정의
 void Snake::tick()
 {
-    //cout << "tick" << endl;
     int headR = snakeData[0][0];
     int headC = snakeData[0][1];
     nodelay(stdscr, true);
     key = getch();
+
     // 새로운 key 입력이 없으면 HEAD는 예전 key 입력에 대한 동작을 반복함
     if (key == -1)
     {
@@ -113,78 +111,55 @@ void Snake::tick()
             headC++;
         }
     }
+
     //새로운 key 입력에 따라 HEAD를 이동함
     if (key == KEY_UP)
     {
-        if (dir == DOWN)
-        {
-            fail = true;
-        }
         headR--;
         dir = UP;
     }
     if (key == KEY_LEFT)
     {
-        if (dir == RIGHT)
-        {
-            fail = true;
-        }
         headC--;
         dir = LEFT;
     }
     if (key == KEY_DOWN)
     {
-        if (dir == UP)
-        {
-            fail = true;
-        }
         headR++;
         dir = DOWN;
     }
     if (key == KEY_RIGHT)
     {
-        if (dir == LEFT)
-        {
-            fail = true;
-        }
         headC++;
         dir = RIGHT;
     }
+
     checkWallConflict(headR, headC);
-    if (getFail()) {
-        return;
-    }
+    
     // 자취 따라가기. BODY는 자신의 앞에 있는 BODY나 HEAD를 따라간다.
     snakeData.push_front(vector<int>({headR, headC}));
     snakeData.pop_back();
+    
     checkBodyConflict(headR, headC);
-    if (getFail()) {
-        return;
-    }
 }
 
 // Head의 위치릍 통해 Head가 곧바로 mapData에 있는 Wall과 부딪힐 것인지 미리 체크한다.
 void Snake::checkWallConflict(int headR, int headC) {
     if (Map::bgMap[headR][headC] == 1) {
-        fail = true;
-        return;
+        throw Failure("wall conflict");
     }
 }
 
+// Head의 위치릍 통해 Head가 곧바로 mapData에 있는 Body와 부딪힐 것인지 미리 체크한다.
 void Snake::checkBodyConflict(int headR, int headC) {
     for (int i = 1; i < snakeData.size(); i++) {
         if (headR == snakeData[i][0] && headC == snakeData[i][1]) {
-            fail = true;
-            return;
+            throw Failure("body conflict");
         }
     }
 }
 
-bool Snake::getFail()
-{
-    return fail;
-}
-
+// snake를 화면에 표시. snake를 그려주기 전에 snake가 지나간 자국들을 배경 색으로 칠해서 지워준다.
 void Snake::display(WINDOW *win)
 {
 
