@@ -1,6 +1,7 @@
 #include <deque>
 #include <vector>
 #include <ncurses.h>
+
 using namespace std;
 
 
@@ -11,7 +12,7 @@ class Snake
         LEFT, RIGHT, UP, DOWN
     };
     Direction dir;
-    bool Fail = false;
+    bool fail = false;
     deque<vector<int>> snakeData = deque<vector<int>>();
     int key;
 public:
@@ -19,7 +20,7 @@ public:
     void findBody(vector<vector<int>> &mapData);
     
     void tick();
-
+    void check(int, int);
     bool getFail();
     void display(WINDOW *win);
 };
