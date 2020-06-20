@@ -1,6 +1,7 @@
 #include <string>
 using namespace std;
 
+// 컬러 팔레트 열거형 상수
 enum Palette
 {
     CP_BKGR = 1,    // 바탕 팔레트
@@ -16,6 +17,7 @@ enum Palette
     CP_MISSION,     // MISSION 팔레트
 };
 
+// Game Over
 class Failure
 {
 public:

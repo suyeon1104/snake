@@ -9,6 +9,8 @@
 
 using namespace std;
 
+
+// 화면 초기화 및 키패드 설정, 컬러 팔레트 설정
 void initGame()
 {
     setlocale(LC_ALL, "");
@@ -36,6 +38,7 @@ void initGame()
 
     bkgd(COLOR_PAIR(CP_BKGR));
 
+    // Snake Game 메시지 출력
     attron(COLOR_PAIR(CP_MESSAGE));
     mvprintw(1, 1, "Welcome To the Snake Game");
     attroff(COLOR_PAIR(CP_MESSAGE));
@@ -44,7 +47,6 @@ void initGame()
 
 int main()
 {
-    cout << "start" << endl;
     initGame();
 
     Map::setbgMap(Map::mapDatas[0]);
@@ -81,7 +83,9 @@ int main()
     wattroff(win3, COLOR_PAIR(CP_MISSION));
     wrefresh(win3);
 
+    // Snake 객체 snake 생성
     Snake snake(Map::mapDatas[0]);
+    
     // Game loop
     while (true)
     {   
@@ -102,12 +106,17 @@ int main()
         wrefresh(win1);
         std::this_thread::sleep_for(std::chrono::milliseconds(300));
     }
+    // getch() 시 delay하도록 설정
     nodelay(stdscr, false);
+    
+    // Game over 메시지 출력
     attron(COLOR_PAIR(CP_MESSAGE));
     mvprintw(16, 20, "YOU LOSE...");
     attroff(COLOR_PAIR(CP_MESSAGE));
     refresh();
     getch();
+    
+    // 게임 종료
     delwin(win1);
     delwin(win2);
     delwin(win3);
