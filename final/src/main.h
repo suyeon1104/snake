@@ -22,6 +22,9 @@ class Failure
 {
 public:
     string message;
-    Failure(const string& msg): message(msg) {
+    Failure(const string &msg) : message(msg)
+    {
     }
 };
+
+const int WINDOW_MARGIN = 15;

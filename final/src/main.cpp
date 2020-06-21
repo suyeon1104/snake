@@ -6,9 +6,9 @@
 #include "main.h"
 #include "snake.h"
 #include "map.h"
+#include "board.cpp"
 
 using namespace std;
-
 
 // 화면 초기화 및 키패드 설정, 컬러 팔레트 설정
 void initGame()
@@ -49,52 +49,27 @@ int main()
 {
     initGame();
 
-    Map::setbgMap(Map::mapDatas[0]);
-    WINDOW *win1 = newwin(Map::bgMap.getRowSize(), Map::bgMap.getColSize() * 2, 19, 16);
+    Map::setbgMap(Map::mapData[Map::current_map_index]);
+    int start_pos = 15;
+    WINDOW *win1 = newwin(Map::bgMap.getRowSize(), Map::bgMap.getColSize() * 2, start_pos, start_pos);
     wbkgd(win1, COLOR_PAIR(CP_BKGR));
     Map::bgMap.display(win1);
 
-    // score board
-    WINDOW *win2 = newwin(10, 20, 5, 20);
-    int bodyLength = 0, growth = 0, poison = 0, gate = 0;
-    wbkgd(win2, COLOR_PAIR(CP_BKGR));
-    wattron(win2, COLOR_PAIR(CP_SCORE));
-    mvwprintw(win2, 1, 1, "Score Board");
-    mvwprintw(win2, 2, 1, "B: ");
-    mvwprintw(win2, 3, 1, "+: ");
-    mvwprintw(win2, 4, 1, "-: ");
-    mvwprintw(win2, 5, 1, "G: ");
-
-    wborder(win2, '|', '|', '-', '-', '+', '+', '+', '+');
-    wattroff(win2, COLOR_PAIR(CP_SCORE));
-    wrefresh(win2);
-
-    // mission board
-    WINDOW *win3 = newwin(10, 20, 5, 50);
-    wbkgd(win3, COLOR_PAIR(CP_BKGR));
-    wattron(win3, COLOR_PAIR(CP_MISSION));
-    mvwprintw(win3, 1, 1, "Mission: ");
-    mvwprintw(win3, 2, 1, "B: ");
-    mvwprintw(win3, 3, 1, "+: ");
-    mvwprintw(win3, 4, 1, "-: ");
-    mvwprintw(win3, 5, 1, "G: ");
-
-    wborder(win3, '|', '|', '-', '-', '+', '+', '+', '+');
-    wattroff(win3, COLOR_PAIR(CP_MISSION));
-    wrefresh(win3);
-
     // Snake 객체 snake 생성
-    Snake snake(Map::mapDatas[0]);
-    
+    Snake snake(Map::mapData[Map::current_map_index]);
+    draw_board(snake);
+
     // Game loop
     while (true)
-    {   
-        try {
+    {
+        try
+        {
             snake.tick();
         }
-        catch(Failure ex) {
+        catch (Failure ex)
+        {
             attron(COLOR_PAIR(CP_MESSAGE));
-            mvprintw(17, 20, (ex.message + "가 발생하였습니다.").c_str());
+            mvprintw(WINDOW_MARGIN - 1, WINDOW_MARGIN, (ex.message + "가 발생하였습니다.").c_str());
             attroff(COLOR_PAIR(CP_MESSAGE));
             refresh();
             getch();
@@ -108,18 +83,14 @@ int main()
     }
     // getch() 시 delay하도록 설정
     nodelay(stdscr, false);
-    
+
     // Game over 메시지 출력
     attron(COLOR_PAIR(CP_MESSAGE));
-    mvprintw(16, 20, "YOU LOSE...");
+    mvprintw(WINDOW_MARGIN - 3, WINDOW_MARGIN, "YOU LOSE...");
     attroff(COLOR_PAIR(CP_MESSAGE));
     refresh();
     getch();
-    
-    // 게임 종료
-    delwin(win1);
-    delwin(win2);
-    delwin(win3);
+
     endwin();
 
     return 0;

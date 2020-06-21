@@ -4,17 +4,21 @@
 
 using namespace std;
 
-
 // Snake 클래스
 class Snake
 {
     // snake의 이동 방향 열거형 상수
-    enum Direction {
-        LEFT, RIGHT, UP, DOWN
+    enum Direction
+    {
+        LEFT,
+        RIGHT,
+        UP,
+        DOWN
     };
 
     // snake의 현재 이동 방향
     Direction dir;
+
     
     // snake의 map 상의 좌표를 나타내는 snakeData를 int의 vector의 deque로 선언
     // deque로 선언하여 vector에서는 사용 불가능한 push_front() 메소드 사용 가능하게 함
@@ -39,4 +43,10 @@ public:
 
     // snake를 화면에 표시
     void display(WINDOW *win);
+
+    const int MAX_LENGTH = 12;
+    int length = 6;
+    int acquired_item_count = 0;
+    int acquired_poison_count = 0;
+    int passed_gate_count = 0;
 };
