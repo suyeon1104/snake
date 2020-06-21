@@ -49,6 +49,12 @@ int main()
 {
     initGame();
 
+    // 사용할 gate 설정
+    Gate aGate;
+    Gate bGate;
+    // stage row,col을 임의로 받을대 사용
+    int temrow,temcol;
+
     Map::setbgMap(Map::mapData[Map::current_map_index]);
     int start_pos = 15;
     WINDOW *win1 = newwin(Map::bgMap.getRowSize(), Map::bgMap.getColSize() * 2, start_pos, start_pos);
@@ -74,6 +80,29 @@ int main()
             refresh();
             getch();
             break;
+        }
+        //gate를 통과중이면 아무것도 하지 않음
+        if(snake.getGatepass() == true)
+        {
+            ;
+        }
+        //통과중이 지 않다면 게이트를 랜덤생성함
+        else if (snake.getGatepass() == false)
+            {
+            //stage 가로 세로를 받음
+            temrow = Map::bgMap.getColSize();
+            temcol = Map::bgMap.getRowSize();
+            //하나씩 게이트 생성, 두 게이트가 겹치지 않도록
+            aGate = snake.RandomGate(Map::mapData[Map::current_map_index],bGate.x,bGate.y,temrow,temcol);
+            snake.setGate1(aGate.x,aGate.y);
+            bGate = snake.RandomGate(Map::mapData[Map::current_map_index],aGate.x,aGate.y,temrow,temcol);
+            snake.setGate2(bGate.x,bGate.y);
+            //원래 맵으로 정리
+            Map::bgMap.setbgMapraw(Map::mapData[Map::current_map_index]);
+            //게이트가 적용된 맵으로 설정
+            Map::bgMap.setbgMapgate(Map::mapData[Map::current_map_index],aGate.x,aGate.y,bGate.x,bGate.y);
+            //이제부터 snake가 gate를 통과중이니 gatepass를 true로함
+            snake.setGatePass(true);
         }
         Map::bgMap.display(win1);
         wrefresh(win1);

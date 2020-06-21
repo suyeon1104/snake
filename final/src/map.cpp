@@ -119,8 +119,25 @@ vector<vector<int>> Map::mapData[] = {
     }};
 int Map::current_map_index = 3;
 
-//bgMap 설정
 void Map::setbgMap(const vector<vector<int>> &inputMapData)
+{
+    bgMap.mapDatum = inputMapData;
+    int nrow = bgMap.mapDatum.size();
+    int ncol = bgMap.mapDatum[0].size();
+    for (int i = 0; i < nrow; i++)
+    {
+        for (int j = 0; j < ncol; j++)
+        {
+            if (bgMap.mapDatum[i][j] != 0 && bgMap.mapDatum[i][j] != 1 && bgMap.mapDatum[i][j] != 2 && bgMap.mapDatum[i][j] != 7)
+            {
+                bgMap.mapDatum[i][j] = 0;
+            }
+        }
+    }
+}
+
+//초기화 용도 기존 setbgMap가 같음
+void Map::setbgMapraw(const vector<vector<int>> &inputMapData)
 {
     bgMap.mapDatum = inputMapData;
     int nrow = bgMap.mapDatum.size();
@@ -135,6 +152,25 @@ void Map::setbgMap(const vector<vector<int>> &inputMapData)
             }
         }
     }
+}
+
+void Map::setbgMapgate(const vector<vector<int>> &inputMapData,int x1,int y1,int x2, int y2) {
+    bgMap.mapDatum = inputMapData;
+    int nrow = bgMap.mapDatum.size();
+    int ncol = bgMap.mapDatum[0].size();
+    for (int i = 0; i < nrow; i++)
+    {
+        for (int j = 0; j < ncol; j++)
+        {
+            if (bgMap.mapDatum[i][j] != 0 && bgMap.mapDatum[i][j] != 1 && bgMap.mapDatum[i][j] != 2 && bgMap.mapDatum[i][j] != 7)
+            {
+                bgMap.mapDatum[i][j] = 0;
+            }
+        }
+    }
+    bgMap.mapDatum[x1][y1] = 7;
+    bgMap.mapDatum[x2][y2] = 7;
+
 }
 
 // mapDatum의 행 수 반환
@@ -183,6 +219,12 @@ void Map::display(WINDOW *win)
                 wattron(win, COLOR_PAIR(CP_IMMUNE_WALL));
                 mvwprintw(win, i, j * 2, "\u25A0");
                 wattroff(win, COLOR_PAIR(CP_IMMUNE_WALL));
+            }
+            else if (mapDatum[i][j] == 7)
+            {
+                wattron(win, COLOR_PAIR(CP_GATE));
+                mvwprintw(win, i, j * 2, "\u25A0");
+                wattroff(win, COLOR_PAIR(CP_GATE));
             }
         }
     }

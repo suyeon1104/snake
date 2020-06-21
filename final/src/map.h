@@ -18,6 +18,8 @@ public:
     
     //bgMap 설정
     static void setbgMap(const vector<vector<int>> &inputMapData);
+    static void setbgMapraw(const vector<vector<int>> &inputMapData);
+    static void setbgMapgate(const vector<vector<int>> &inputMapData,int x1,int y1,int x2,int y2);
 
     // mapData의 row size 반환
     int getRowSize();
