@@ -7,7 +7,7 @@ OBJECTS=main.o map.o snake.o
 all:	$(TARGET)
 
 $(TARGET):	$(OBJECTS)
-	$(CC) $(CPPFLAGS) -o $@ $^ -lncursesw
+	$(CC) $(CPPFLAGS) -o $@ $^ -lncursesw5
 snake.o:	snake.cpp snake.h
 	$(CC) $(CPPFLAGS) -c $<
 map.o:	map.cpp map.h

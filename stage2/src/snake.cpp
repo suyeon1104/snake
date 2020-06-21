@@ -88,10 +88,12 @@ void Snake::findBody(vector<vector<int>> &mapData)
 
 void Snake::tick()
 {
+    
     int headR = snakeData[0][0];
     int headC = snakeData[0][1];
     nodelay(stdscr, true);
-    key = getch();
+    // key는 매 tick마다 입력받는 현재 키. 입력이 없으면 -1 값을 가짐.
+    int key = getch();
 
     // 새로운 key 입력이 없으면 HEAD는 예전 key 입력에 대한 동작을 반복함
     if (key == -1)
