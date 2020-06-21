@@ -15,11 +15,11 @@ public:
 
     // 바탕, Wall과 ImmuneWall들만 저장하는 맵 데이터
     static Map bgMap;
-    
+
     //bgMap 설정
     static void setbgMap(const vector<vector<int>> &inputMapData);
     static void setbgMapraw(const vector<vector<int>> &inputMapData);
-    static void setbgMapgate(const vector<vector<int>> &inputMapData,int x1,int y1,int x2,int y2);
+    static void setbgMapgate(const vector<vector<int>> &inputMapData, int x1, int y1, int x2, int y2);
 
     // mapData의 row size 반환
     int getRowSize();

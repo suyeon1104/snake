@@ -21,10 +21,25 @@ void draw_board(Snake snake)
   wbkgd(win3, COLOR_PAIR(CP_BKGR));
   wattron(win3, COLOR_PAIR(CP_MISSION));
   mvwprintw(win3, 1, 1, "Mission");
-  mvwprintw(win3, 2, 1, ("B: " + to_string(0)).c_str());
-  mvwprintw(win3, 3, 1, ("+: " + to_string(0)).c_str());
-  mvwprintw(win3, 4, 1, ("-: " + to_string(0)).c_str());
-  mvwprintw(win3, 5, 1, ("G: " + to_string(0)).c_str());
+  if (snake.length == snake.MAX_LENGTH)
+    mvwprintw(win3, 2, 1, "B: (V)");
+  else
+    mvwprintw(win3, 2, 1, "B: (X)");
+  if (
+      snake.acquired_item_count == snake.MISION_ITEM_COUNT)
+    mvwprintw(win3, 3, 1, "+: (V)");
+  else
+    mvwprintw(win3, 3, 1, "+: (X)");
+  if (
+      snake.acquired_poison_count == snake.MISION_POSION_COUNT)
+    mvwprintw(win3, 4, 1, "-: (V)");
+  else
+    mvwprintw(win3, 4, 1, "-: (X)");
+  if (
+      snake.passed_gate_count == snake.MISION_GATE_COUNT)
+    mvwprintw(win3, 5, 1, "G: (V)");
+  else
+    mvwprintw(win3, 5, 1, "G: (X)");
 
   wborder(win3, '|', '|', '-', '-', '+', '+', '+', '+');
   wattroff(win3, COLOR_PAIR(CP_MISSION));
