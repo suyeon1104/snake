@@ -62,7 +62,7 @@ int Map::getColSize()
     return mapData[0].size();
 }
 
-// map 객체에서 인덱스 연산자를 이용해 직접 mapData에 접근하도록 만듦
+// Map 객체에서 직접 현재 맵의 인덱스 번째의 한 행에 대한 레퍼런스를 반환
 vector<int>& Map::operator[](int idx) {
     return mapData[idx];
 }

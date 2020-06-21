@@ -25,7 +25,7 @@ foundHead:
     findBody(mapData);
 
     // snake의 초기 방향 검출
-    
+
     if (snakeData.size() == 1)
     {
         dir = LEFT;
@@ -50,7 +50,6 @@ foundHead:
         }
     }
 }
-
 
 void Snake::findBody(vector<vector<int>> &mapData)
 {
@@ -85,15 +84,12 @@ void Snake::findBody(vector<vector<int>> &mapData)
     }
 }
 
-
 void Snake::tick()
 {
-    
     int headR = snakeData[0][0];
     int headC = snakeData[0][1];
     nodelay(stdscr, true);
-    // key는 매 tick마다 입력받는 현재 키. 입력이 없으면 -1 값을 가짐.
-    int key = getch();
+    key = getch();
 
     // 새로운 key 입력이 없으면 HEAD는 예전 key 입력에 대한 동작을 반복함
     if (key == -1)
@@ -139,30 +135,32 @@ void Snake::tick()
     }
 
     checkWallConflict(headR, headC);
-    
+
     // 자취 따라가기. BODY는 자신의 앞에 있는 BODY나 HEAD를 따라간다.
     snakeData.push_front(vector<int>({headR, headC}));
     snakeData.pop_back();
-    
+
     checkBodyConflict(headR, headC);
 }
 
-
-void Snake::checkWallConflict(int headR, int headC) {
-    if (Map::bgMap[headR][headC] == 1) {
+void Snake::checkWallConflict(int headR, int headC)
+{
+    if (Map::bgMap[headR][headC] == 1)
+    {
         throw Failure("wall conflict");
     }
 }
 
-
-void Snake::checkBodyConflict(int headR, int headC) {
-    for (int i = 1; i < snakeData.size(); i++) {
-        if (headR == snakeData[i][0] && headC == snakeData[i][1]) {
+void Snake::checkBodyConflict(int headR, int headC)
+{
+    for (int i = 1; i < snakeData.size(); i++)
+    {
+        if (headR == snakeData[i][0] && headC == snakeData[i][1])
+        {
             throw Failure("body conflict");
         }
     }
 }
-
 
 void Snake::display(WINDOW *win)
 {
@@ -172,13 +170,13 @@ void Snake::display(WINDOW *win)
     mvwprintw(win, snakeData[0][0], snakeData[0][1] * 2, " ");
     mvwprintw(win, snakeData[0][0], snakeData[0][1] * 2 + 1, " ");
     wattroff(win, COLOR_PAIR(CP_BKGR));
-    
+
     // snake의 Head 칠해주기
     // 비 아스키 문자를 출력하면 screen 상에 두 칸을 차지하므로 가로를 두 배로 늘려서 특수문자 출력함.
     wattron(win, COLOR_PAIR(CP_HEAD)); // HEAD 색
     mvwprintw(win, snakeData[0][0], snakeData[0][1] * 2, "\u25CF");
     wattroff(win, COLOR_PAIR(CP_HEAD));
-    
+
     for (int i = 1; i < snakeData.size(); i++)
     {
         // snake의 Body를 그려주기 전에 snake가 지나간 자국들을 배경 색으로 칠해서 지움.
@@ -187,7 +185,7 @@ void Snake::display(WINDOW *win)
         mvwprintw(win, snakeData[i][0], snakeData[i][1] * 2, " ");
         mvwprintw(win, snakeData[i][0], snakeData[i][1] * 2 + 1, " ");
         wattroff(win, COLOR_PAIR(CP_BKGR));
-        
+
         // snake의 Body 칠해주기
         // 비 아스키 문자를 출력하면 screen 상에 두 칸을 차지하므로 가로를 두 배로 늘려서 특수문자 출력함.
         wattron(win, COLOR_PAIR(CP_BODY)); // BODY 색

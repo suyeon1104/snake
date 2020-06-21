@@ -4,15 +4,12 @@
 
 using namespace std;
 
-
 //return 을 두개 하기위한 gate sturct
 typedef struct _Gate
     {
         int x;
         int y;
     }Gate;
-
-
 // Snake 클래스
 class Snake
 {
@@ -51,7 +48,6 @@ class Snake
     int gatesnakebody = -1;
     //gate를 지났는지 true,false로 표시
     bool Gatepass = true;
-
 
 public:
     

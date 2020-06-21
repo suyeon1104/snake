@@ -48,6 +48,7 @@ void initGame()
 int main()
 {
     initGame();
+
     // 사용할 gate 설정
     Gate aGate;
     Gate bGate;

@@ -119,7 +119,6 @@ vector<vector<int>> Map::mapData[] = {
     }};
 int Map::current_map_index = 3;
 
-//bgMap 설정 + 7(gate)포함
 void Map::setbgMap(const vector<vector<int>> &inputMapData)
 {
     bgMap.mapDatum = inputMapData;
@@ -155,7 +154,6 @@ void Map::setbgMapraw(const vector<vector<int>> &inputMapData)
     }
 }
 
-//gate를 랜덤으로 받아 새로설정할 때 사용
 void Map::setbgMapgate(const vector<vector<int>> &inputMapData,int x1,int y1,int x2, int y2) {
     bgMap.mapDatum = inputMapData;
     int nrow = bgMap.mapDatum.size();

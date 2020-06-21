@@ -163,7 +163,6 @@ void Snake::tick()
     }
 }
 
-
 void Snake::checkWallConflict(int headR, int headC)
 {
     if (Map::bgMap[headR][headC] == 1)
